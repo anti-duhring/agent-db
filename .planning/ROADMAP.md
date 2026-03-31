@@ -44,7 +44,12 @@ Plans:
   3. `--iterations N` flag changes the sample count reflected in results
   4. `--dry-run` verifies Postgres connectivity and schema setup without executing benchmark iterations
   5. `--backend`, `--scenario`, and `--profile` flags correctly scope which work executes
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 02-01-PLAN.md — Postgres ChatRepository adapter with pgx/v5, schema, and integration tests
+- [ ] 02-02-PLAN.md — Benchmark runner engine (Scenario interface, Runner, Results, HdrHistogram)
+- [ ] 02-03-PLAN.md — Five benchmark scenarios (append, window, list, coldstart, concurrent)
+- [ ] 02-04-PLAN.md — CLI entry point wiring flags, testcontainer, and runner
 
 ### Phase 3: DynamoDB + Turso Adapters
 **Goal**: All five scenarios run against DynamoDB and Turso, completing the three-way comparison with a correctly designed DynamoDB schema
@@ -77,6 +82,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-03-31 |
-| 2. Runner + Postgres Baseline | 0/? | Not started | - |
+| 2. Runner + Postgres Baseline | 0/4 | Not started | - |
 | 3. DynamoDB + Turso Adapters | 0/? | Not started | - |
 | 4. Cost Model + Report | 0/? | Not started | - |
