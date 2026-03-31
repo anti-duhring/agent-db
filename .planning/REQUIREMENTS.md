@@ -85,7 +85,7 @@ Deferred to future work if POC validates the approach.
 |-------------|-------|--------|
 | IFACE-01 | Phase 1 | Pending |
 | IFACE-02 | Phase 1 | Pending |
-| IFACE-03 | Phase 2-4 | Pending |
+| IFACE-03 | Phase 3 | Pending |
 | DATA-01 | Phase 1 | Pending |
 | DATA-02 | Phase 1 | Pending |
 | DATA-03 | Phase 1 | Pending |
@@ -98,12 +98,12 @@ Deferred to future work if POC validates the approach.
 | METR-02 | Phase 2 | Pending |
 | METR-03 | Phase 2 | Pending |
 | METR-04 | Phase 2 | Pending |
-| OUT-01 | Phase 5 | Pending |
-| OUT-02 | Phase 5 | Pending |
-| OUT-03 | Phase 5 | Pending |
-| OUT-04 | Phase 5 | Pending |
-| OUT-05 | Phase 5 | Pending |
-| OUT-06 | Phase 5 | Pending |
+| OUT-01 | Phase 4 | Pending |
+| OUT-02 | Phase 4 | Pending |
+| OUT-03 | Phase 4 | Pending |
+| OUT-04 | Phase 4 | Pending |
+| OUT-05 | Phase 4 | Pending |
+| OUT-06 | Phase 4 | Pending |
 | CLI-01 | Phase 2 | Pending |
 | CLI-02 | Phase 2 | Pending |
 | CLI-03 | Phase 2 | Pending |
@@ -116,4 +116,4 @@ Deferred to future work if POC validates the approach.
 
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-03-31 after initial definition*
+*Last updated: 2026-03-31 after roadmap creation*
