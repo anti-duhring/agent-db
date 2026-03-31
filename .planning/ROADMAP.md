@@ -12,7 +12,7 @@ Build a Go benchmark harness that produces data-backed evidence for choosing a d
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - ChatRepository interface, domain types, data generator, and in-memory stub
+- [x] **Phase 1: Foundation** - ChatRepository interface, domain types, data generator, and in-memory stub (completed 2026-03-31)
 - [ ] **Phase 2: Runner + Postgres Baseline** - Benchmark runner, metrics collector, CLI, and first working end-to-end backend
 - [ ] **Phase 3: DynamoDB + Turso Adapters** - Remaining two adapter implementations completing the three-way comparison
 - [ ] **Phase 4: Cost Model + Report** - Post-processing cost projections, operational complexity scorecard, and final written recommendation
@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01-PLAN.md — Go module init, domain types, ChatRepository interface
 - [x] 01-02-PLAN.md — In-memory ChatRepository adapter with tests
-- [ ] 01-03-PLAN.md — Seeded data generator with three profiles
+- [x] 01-03-PLAN.md — Seeded data generator with three profiles
 
 ### Phase 2: Runner + Postgres Baseline
 **Goal**: All five benchmark scenarios produce valid p50/p95/p99 latency numbers against a real Postgres backend, and the CLI controls them
@@ -76,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/3 | In Progress|  |
+| 1. Foundation | 3/3 | Complete   | 2026-03-31 |
 | 2. Runner + Postgres Baseline | 0/? | Not started | - |
 | 3. DynamoDB + Turso Adapters | 0/? | Not started | - |
 | 4. Cost Model + Report | 0/? | Not started | - |

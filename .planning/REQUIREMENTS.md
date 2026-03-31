@@ -15,9 +15,9 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 ### Data Generation
 
-- [ ] **DATA-01**: Synthetic conversation data generator with deterministic seeded RNG
-- [ ] **DATA-02**: Three data size profiles: small (10 messages), medium (500 messages), large (5,000 messages)
-- [ ] **DATA-03**: Realistic message content with variable sizes (100-2000 chars) and role alternation (user/assistant)
+- [x] **DATA-01**: Synthetic conversation data generator with deterministic seeded RNG
+- [x] **DATA-02**: Three data size profiles: small (10 messages), medium (500 messages), large (5,000 messages)
+- [x] **DATA-03**: Realistic message content with variable sizes (100-2000 chars) and role alternation (user/assistant)
 
 ### Benchmark Scenarios
 
@@ -86,9 +86,9 @@ Deferred to future work if POC validates the approach.
 | IFACE-01 | Phase 1 | Complete |
 | IFACE-02 | Phase 1 | Complete |
 | IFACE-03 | Phase 3 | Pending |
-| DATA-01 | Phase 1 | Pending |
-| DATA-02 | Phase 1 | Pending |
-| DATA-03 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Complete |
+| DATA-02 | Phase 1 | Complete |
+| DATA-03 | Phase 1 | Complete |
 | SCEN-01 | Phase 2 | Pending |
 | SCEN-02 | Phase 2 | Pending |
 | SCEN-03 | Phase 2 | Pending |
