@@ -116,10 +116,18 @@ func (r *Runner) Run(ctx context.Context) ([]ScenarioResult, error) {
 		h := hdrhistogram.New(1, 30_000_000, 3)
 
 		// Warmup pass — iterations are not recorded (METR-02).
-		for i := 0; i < r.config.Warmup; i++ {
-			if wErr := sc.Run(ctx, r.repo); wErr != nil {
-				// Log and continue — warmup failures are tolerated.
-				fmt.Printf("runner: warmup iteration %d for %q: %v\n", i, sc.Name(), wErr)
+		// Scenarios that implement WarmupSkipper and return true skip warmup
+		// so that cold-start latency is measured on the first actual read.
+		skipWarmup := false
+		if ws, ok := sc.(WarmupSkipper); ok {
+			skipWarmup = ws.SkipWarmup()
+		}
+		if !skipWarmup {
+			for i := 0; i < r.config.Warmup; i++ {
+				if wErr := sc.Run(ctx, r.repo); wErr != nil {
+					// Log and continue — warmup failures are tolerated.
+					fmt.Printf("runner: warmup iteration %d for %q: %v\n", i, sc.Name(), wErr)
+				}
 			}
 		}
 

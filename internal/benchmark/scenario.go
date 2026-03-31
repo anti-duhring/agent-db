@@ -9,6 +9,13 @@ import (
 	"github.com/anti-duhring/agent-db/internal/repository"
 )
 
+// WarmupSkipper is an optional interface. Scenarios that implement it
+// with SkipWarmup() returning true will not have warmup iterations run by
+// the Runner. Used by ColdStartLoad (SCEN-04) to measure first-read latency.
+type WarmupSkipper interface {
+	SkipWarmup() bool
+}
+
 // Scenario is the interface that all benchmark scenarios must implement.
 // Each scenario exercises a specific chat storage operation or sequence of
 // operations against a ChatRepository backend (D-06).
