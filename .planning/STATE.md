@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: Phase 2 context gathered
-last_updated: "2026-03-31T22:31:19.794Z"
+stopped_at: Completed 02-runner-postgres-baseline 02-01-PLAN.md
+last_updated: "2026-03-31T23:05:43.985Z"
 last_activity: 2026-03-31
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 7
+  completed_plans: 4
   percent: 0
 ---
 
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P01 | 1 | 2 tasks | 5 files |
 | Phase 01-foundation P02 | 1 | 1 tasks | 2 files |
 | Phase 01-foundation P03 | 2 | 1 tasks | 4 files |
+| Phase 02-runner-postgres-baseline P01 | 4 | 1 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: gofakeit v7 uses uint64 seed; public New() takes int64 and casts internally
 - [Phase 01-foundation]: gofakeit v7 Rand field is math/rand/v2.Source (not io.Reader); UUID generation uses 16 Uint8() calls with manual version/variant bits
 - [Phase 01-foundation]: Generator uses fixed base time (2026-01-01 UTC) for deterministic timestamps
+- [Phase 02-runner-postgres-baseline]: Schema must be applied via a separate pgx.Connect before pool creation — AfterConnect fires when pool acquires first connection, so tables must exist before statements are prepared
+- [Phase 02-runner-postgres-baseline]: LoadWindow uses DESC LIMIT query + Go in-place reverse for oldest-first output — single efficient DB roundtrip using idx_messages_window index
 
 ### Pending Todos
 
@@ -86,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-31T22:31:19.791Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-runner-postgres-baseline/02-CONTEXT.md
+Last session: 2026-03-31T23:05:43.983Z
+Stopped at: Completed 02-runner-postgres-baseline 02-01-PLAN.md
+Resume file: None

@@ -11,7 +11,7 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 - [x] **IFACE-01**: Common `ChatRepository` interface with methods: CreateConversation, AppendMessage, LoadWindow, ListConversations
 - [x] **IFACE-02**: Domain types: Conversation (id, partner_id, user_id, created_at, updated_at), Message (id, conversation_id, role, content, token_count, created_at)
-- [ ] **IFACE-03**: Three implementations of ChatRepository: Postgres, DynamoDB, Turso
+- [x] **IFACE-03**: Three implementations of ChatRepository: Postgres, DynamoDB, Turso
 
 ### Data Generation
 
@@ -32,7 +32,7 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 - [ ] **METR-01**: Latency percentiles per scenario per backend: p50, p95, p99
 - [ ] **METR-02**: Warmup phase (configurable iterations) excluded from measurement
 - [ ] **METR-03**: Configurable iteration count via `--iterations N` flag
-- [ ] **METR-04**: Environment isolation — clean schema/data state per run
+- [x] **METR-04**: Environment isolation — clean schema/data state per run
 
 ### Output & Reporting
 
@@ -85,7 +85,7 @@ Deferred to future work if POC validates the approach.
 |-------------|-------|--------|
 | IFACE-01 | Phase 1 | Complete |
 | IFACE-02 | Phase 1 | Complete |
-| IFACE-03 | Phase 3 | Pending |
+| IFACE-03 | Phase 3 | Complete |
 | DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Complete |
 | DATA-03 | Phase 1 | Complete |
@@ -97,7 +97,7 @@ Deferred to future work if POC validates the approach.
 | METR-01 | Phase 2 | Pending |
 | METR-02 | Phase 2 | Pending |
 | METR-03 | Phase 2 | Pending |
-| METR-04 | Phase 2 | Pending |
+| METR-04 | Phase 2 | Complete |
 | OUT-01 | Phase 4 | Pending |
 | OUT-02 | Phase 4 | Pending |
 | OUT-03 | Phase 4 | Pending |
