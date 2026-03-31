@@ -29,8 +29,8 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 ### Measurement & Metrics
 
-- [ ] **METR-01**: Latency percentiles per scenario per backend: p50, p95, p99
-- [ ] **METR-02**: Warmup phase (configurable iterations) excluded from measurement
+- [x] **METR-01**: Latency percentiles per scenario per backend: p50, p95, p99
+- [x] **METR-02**: Warmup phase (configurable iterations) excluded from measurement
 - [ ] **METR-03**: Configurable iteration count via `--iterations N` flag
 - [x] **METR-04**: Environment isolation — clean schema/data state per run
 
@@ -94,8 +94,8 @@ Deferred to future work if POC validates the approach.
 | SCEN-03 | Phase 2 | Pending |
 | SCEN-04 | Phase 2 | Pending |
 | SCEN-05 | Phase 2 | Pending |
-| METR-01 | Phase 2 | Pending |
-| METR-02 | Phase 2 | Pending |
+| METR-01 | Phase 2 | Complete |
+| METR-02 | Phase 2 | Complete |
 | METR-03 | Phase 2 | Pending |
 | METR-04 | Phase 2 | Complete |
 | OUT-01 | Phase 4 | Pending |
