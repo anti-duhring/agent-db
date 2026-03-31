@@ -12,12 +12,13 @@ Produce data-backed evidence that the team can use to choose the right storage e
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Common ChatRepository interface defined with four methods — Validated in Phase 01: Foundation
+- [x] In-memory reference implementation of ChatRepository — Validated in Phase 01: Foundation
+- [x] Synthetic conversation data generator (small/medium/large profiles) — Validated in Phase 01: Foundation
 
 ### Active
 
-- [ ] Common ChatRepository interface with three implementations (Postgres, DynamoDB, Turso)
-- [ ] Synthetic conversation data generator (small/medium/large profiles)
+- [ ] Common ChatRepository interface with three database implementations (Postgres, DynamoDB, Turso)
 - [ ] Benchmark scenarios: append message, load sliding window, list conversations, cold start load, concurrent writes
 - [ ] Latency measurement: p50, p95, p99 per scenario per backend
 - [ ] Cost projection model per backend at projected scale
@@ -82,4 +83,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-31 after initialization*
+*Last updated: 2026-03-31 after Phase 01 completion*
