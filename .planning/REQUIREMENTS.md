@@ -9,8 +9,8 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 ### Interface & Domain
 
-- [ ] **IFACE-01**: Common `ChatRepository` interface with methods: CreateConversation, AppendMessage, LoadWindow, ListConversations
-- [ ] **IFACE-02**: Domain types: Conversation (id, partner_id, user_id, created_at, updated_at), Message (id, conversation_id, role, content, token_count, created_at)
+- [x] **IFACE-01**: Common `ChatRepository` interface with methods: CreateConversation, AppendMessage, LoadWindow, ListConversations
+- [x] **IFACE-02**: Domain types: Conversation (id, partner_id, user_id, created_at, updated_at), Message (id, conversation_id, role, content, token_count, created_at)
 - [ ] **IFACE-03**: Three implementations of ChatRepository: Postgres, DynamoDB, Turso
 
 ### Data Generation
@@ -83,8 +83,8 @@ Deferred to future work if POC validates the approach.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| IFACE-01 | Phase 1 | Pending |
-| IFACE-02 | Phase 1 | Pending |
+| IFACE-01 | Phase 1 | Complete |
+| IFACE-02 | Phase 1 | Complete |
 | IFACE-03 | Phase 3 | Pending |
 | DATA-01 | Phase 1 | Pending |
 | DATA-02 | Phase 1 | Pending |

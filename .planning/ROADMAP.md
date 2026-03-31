@@ -30,7 +30,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. All three size profiles (small/10 msgs, medium/500 msgs, large/5000 msgs) are generated with realistic variable-length content and correct role alternation
 **Plans**: 3 plans
 Plans:
-- [ ] 01-01-PLAN.md — Go module init, domain types, ChatRepository interface
+- [x] 01-01-PLAN.md — Go module init, domain types, ChatRepository interface
 - [ ] 01-02-PLAN.md — In-memory ChatRepository adapter with tests
 - [ ] 01-03-PLAN.md — Seeded data generator with three profiles
 
@@ -76,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Not started | - |
+| 1. Foundation | 1/3 | In Progress|  |
 | 2. Runner + Postgres Baseline | 0/? | Not started | - |
 | 3. DynamoDB + Turso Adapters | 0/? | Not started | - |
 | 4. Cost Model + Report | 0/? | Not started | - |
