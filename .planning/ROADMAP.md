@@ -28,7 +28,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Conversation and Message domain types exist with all specified fields and are used exclusively (no database-specific types leak into the interface)
   3. Data generator produces deterministic output: identical seed produces identical conversation and message content across invocations
   4. All three size profiles (small/10 msgs, medium/500 msgs, large/5000 msgs) are generated with realistic variable-length content and correct role alternation
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 01-01-PLAN.md — Go module init, domain types, ChatRepository interface
+- [ ] 01-02-PLAN.md — In-memory ChatRepository adapter with tests
+- [ ] 01-03-PLAN.md — Seeded data generator with three profiles
 
 ### Phase 2: Runner + Postgres Baseline
 **Goal**: All five benchmark scenarios produce valid p50/p95/p99 latency numbers against a real Postgres backend, and the CLI controls them
@@ -72,7 +76,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/? | Not started | - |
+| 1. Foundation | 0/3 | Not started | - |
 | 2. Runner + Postgres Baseline | 0/? | Not started | - |
 | 3. DynamoDB + Turso Adapters | 0/? | Not started | - |
 | 4. Cost Model + Report | 0/? | Not started | - |
