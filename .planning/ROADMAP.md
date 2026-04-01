@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - ChatRepository interface, domain types, data generator, and in-memory stub (completed 2026-03-31)
 - [x] **Phase 2: Runner + Postgres Baseline** - Benchmark runner, metrics collector, CLI, and first working end-to-end backend (completed 2026-04-01)
-- [ ] **Phase 3: DynamoDB + Turso Adapters** - Remaining two adapter implementations completing the three-way comparison
+- [x] **Phase 3: DynamoDB + Turso Adapters** - Remaining two adapter implementations completing the three-way comparison (completed 2026-04-01)
 - [ ] **Phase 4: Cost Model + Report** - Post-processing cost projections, operational complexity scorecard, and final written recommendation
 
 ## Phase Details
@@ -64,7 +64,7 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — DynamoDB ChatRepository adapter with single-table design and LocalStack integration tests
 - [x] 03-02-PLAN.md — Turso ChatRepository adapter with libsql driver and env-var-gated integration tests
-- [ ] 03-03-PLAN.md — CLI multi-backend wiring with BackendMeta output and side-by-side results
+- [x] 03-03-PLAN.md — CLI multi-backend wiring with BackendMeta output and side-by-side results
 
 ### Phase 4: Cost Model + Report
 **Goal**: A complete comparison report exists with cost projections, operational complexity scores, and a written recommendation
@@ -87,5 +87,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-03-31 |
 | 2. Runner + Postgres Baseline | 4/4 | Complete   | 2026-04-01 |
-| 3. DynamoDB + Turso Adapters | 2/3 | In Progress|  |
+| 3. DynamoDB + Turso Adapters | 3/3 | Complete   | 2026-04-01 |
 | 4. Cost Model + Report | 0/? | Not started | - |
