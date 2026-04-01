@@ -19,15 +19,14 @@ Produce data-backed evidence that the team can use to choose the right storage e
 - [x] Benchmark scenarios (append, window, list, coldstart, concurrent) — Validated in Phase 02: Runner + Postgres Baseline
 - [x] Latency measurement with HdrHistogram (p50/p95/p99) — Validated in Phase 02: Runner + Postgres Baseline
 - [x] CLI that runs benchmarks and outputs structured results — Validated in Phase 02: Runner + Postgres Baseline
+- [x] DynamoDB ChatRepository implementation with aws-sdk-go-v2 (single-table design) — Validated in Phase 03: DynamoDB + Turso Adapters
+- [x] Turso ChatRepository implementation with libsql-client-go (database/sql) — Validated in Phase 03: DynamoDB + Turso Adapters
+- [x] Multi-backend CLI dispatch (--backend all) with side-by-side output — Validated in Phase 03: DynamoDB + Turso Adapters
 
 ### Active
 
-- [ ] Common ChatRepository interface with three database implementations (Postgres, DynamoDB, Turso)
-- [ ] Benchmark scenarios: append message, load sliding window, list conversations, cold start load, concurrent writes
-- [ ] Latency measurement: p50, p95, p99 per scenario per backend
 - [ ] Cost projection model per backend at projected scale
 - [ ] Operational complexity assessment (code complexity, gotchas, connection management)
-- [ ] CLI that runs benchmarks and outputs structured results
 - [ ] Written comparison report with recommendation
 
 ### Out of Scope
@@ -87,4 +86,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after Phase 02 completion*
+*Last updated: 2026-04-01 after Phase 03 completion*
