@@ -15,6 +15,10 @@ Produce data-backed evidence that the team can use to choose the right storage e
 - [x] Common ChatRepository interface defined with four methods — Validated in Phase 01: Foundation
 - [x] In-memory reference implementation of ChatRepository — Validated in Phase 01: Foundation
 - [x] Synthetic conversation data generator (small/medium/large profiles) — Validated in Phase 01: Foundation
+- [x] Postgres ChatRepository implementation with pgx/v5 — Validated in Phase 02: Runner + Postgres Baseline
+- [x] Benchmark scenarios (append, window, list, coldstart, concurrent) — Validated in Phase 02: Runner + Postgres Baseline
+- [x] Latency measurement with HdrHistogram (p50/p95/p99) — Validated in Phase 02: Runner + Postgres Baseline
+- [x] CLI that runs benchmarks and outputs structured results — Validated in Phase 02: Runner + Postgres Baseline
 
 ### Active
 
@@ -83,4 +87,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-31 after Phase 01 completion*
+*Last updated: 2026-04-01 after Phase 02 completion*
