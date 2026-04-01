@@ -25,9 +25,13 @@ Produce data-backed evidence that the team can use to choose the right storage e
 
 ### Active
 
-- [ ] Cost projection model per backend at projected scale
-- [ ] Operational complexity assessment (code complexity, gotchas, connection management)
-- [ ] Written comparison report with recommendation
+(None — all requirements validated)
+
+### Recently Validated
+
+- [x] Cost projection model per backend at projected scale — Validated in Phase 04: Cost Model + Report
+- [x] Operational complexity assessment (code complexity, gotchas, connection management) — Validated in Phase 04: Cost Model + Report
+- [x] Written comparison report with recommendation — Validated in Phase 04: Cost Model + Report
 
 ### Out of Scope
 
@@ -86,4 +90,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after Phase 03 completion*
+*Last updated: 2026-04-01 after Phase 04 completion — all milestone phases complete*
