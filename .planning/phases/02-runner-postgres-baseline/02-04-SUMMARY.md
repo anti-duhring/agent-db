@@ -75,7 +75,7 @@ completed: 2026-03-31
 - **Duration:** ~4 min
 - **Started:** 2026-03-31T23:26:18Z
 - **Completed:** 2026-03-31T23:26:00Z
-- **Tasks:** 1 of 2 complete (Task 2 is a human-verify checkpoint)
+- **Tasks:** 2 of 2 complete
 - **Files modified:** 11
 
 ## Accomplishments
@@ -91,6 +91,7 @@ completed: 2026-03-31
 ## Task Commits
 
 1. **Task 1: Implement CLI with flag parsing, testcontainer lifecycle, and runner wiring** - `a4fe573` (feat)
+2. **Task 2: Verify end-to-end benchmark execution** - approved by user (human-verify checkpoint)
 
 **Plan metadata:** pending final commit
 

@@ -13,7 +13,7 @@ Build a Go benchmark harness that produces data-backed evidence for choosing a d
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - ChatRepository interface, domain types, data generator, and in-memory stub (completed 2026-03-31)
-- [ ] **Phase 2: Runner + Postgres Baseline** - Benchmark runner, metrics collector, CLI, and first working end-to-end backend
+- [x] **Phase 2: Runner + Postgres Baseline** - Benchmark runner, metrics collector, CLI, and first working end-to-end backend (completed 2026-04-01)
 - [ ] **Phase 3: DynamoDB + Turso Adapters** - Remaining two adapter implementations completing the three-way comparison
 - [ ] **Phase 4: Cost Model + Report** - Post-processing cost projections, operational complexity scorecard, and final written recommendation
 
@@ -47,8 +47,8 @@ Plans:
 **Plans**: 4 plans
 Plans:
 - [x] 02-01-PLAN.md — Postgres ChatRepository adapter with pgx/v5, schema, and integration tests
-- [ ] 02-02-PLAN.md — Benchmark runner engine (Scenario interface, Runner, Results, HdrHistogram)
-- [ ] 02-03-PLAN.md — Five benchmark scenarios (append, window, list, coldstart, concurrent)
+- [x] 02-02-PLAN.md — Benchmark runner engine (Scenario interface, Runner, Results, HdrHistogram)
+- [x] 02-03-PLAN.md — Five benchmark scenarios (append, window, list, coldstart, concurrent)
 - [x] 02-04-PLAN.md — CLI entry point wiring flags, testcontainer, and runner
 
 ### Phase 3: DynamoDB + Turso Adapters
@@ -82,6 +82,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-03-31 |
-| 2. Runner + Postgres Baseline | 1/4 | In Progress|  |
+| 2. Runner + Postgres Baseline | 4/4 | Complete   | 2026-04-01 |
 | 3. DynamoDB + Turso Adapters | 0/? | Not started | - |
 | 4. Cost Model + Report | 0/? | Not started | - |
