@@ -31,7 +31,7 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 - [ ] **METR-01**: Latency percentiles per scenario per backend: p50, p95, p99
 - [ ] **METR-02**: Warmup phase (configurable iterations) excluded from measurement
-- [ ] **METR-03**: Configurable iteration count via `--iterations N` flag
+- [x] **METR-03**: Configurable iteration count via `--iterations N` flag
 - [x] **METR-04**: Environment isolation — clean schema/data state per run
 
 ### Output & Reporting
@@ -45,10 +45,10 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 ### CLI
 
-- [ ] **CLI-01**: `--dry-run` mode that verifies connectivity and schema setup without running benchmarks
-- [ ] **CLI-02**: Backend selection flag (`--backend postgres,dynamodb,turso` or `--backend all`)
-- [ ] **CLI-03**: Scenario selection flag (`--scenario append,window` or `--scenario all`)
-- [ ] **CLI-04**: Data profile flag (`--profile small,medium,large`)
+- [x] **CLI-01**: `--dry-run` mode that verifies connectivity and schema setup without running benchmarks
+- [x] **CLI-02**: Backend selection flag (`--backend postgres,dynamodb,turso` or `--backend all`)
+- [x] **CLI-03**: Scenario selection flag (`--scenario append,window` or `--scenario all`)
+- [x] **CLI-04**: Data profile flag (`--profile small,medium,large`)
 
 ## v2 Requirements
 
@@ -96,7 +96,7 @@ Deferred to future work if POC validates the approach.
 | SCEN-05 | Phase 2 | Pending |
 | METR-01 | Phase 2 | Pending |
 | METR-02 | Phase 2 | Pending |
-| METR-03 | Phase 2 | Pending |
+| METR-03 | Phase 2 | Complete |
 | METR-04 | Phase 2 | Complete |
 | OUT-01 | Phase 4 | Pending |
 | OUT-02 | Phase 4 | Pending |
@@ -104,10 +104,10 @@ Deferred to future work if POC validates the approach.
 | OUT-04 | Phase 4 | Pending |
 | OUT-05 | Phase 4 | Pending |
 | OUT-06 | Phase 4 | Pending |
-| CLI-01 | Phase 2 | Pending |
-| CLI-02 | Phase 2 | Pending |
-| CLI-03 | Phase 2 | Pending |
-| CLI-04 | Phase 2 | Pending |
+| CLI-01 | Phase 2 | Complete |
+| CLI-02 | Phase 2 | Complete |
+| CLI-03 | Phase 2 | Complete |
+| CLI-04 | Phase 2 | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total

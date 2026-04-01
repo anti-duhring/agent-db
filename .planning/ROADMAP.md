@@ -49,7 +49,7 @@ Plans:
 - [x] 02-01-PLAN.md — Postgres ChatRepository adapter with pgx/v5, schema, and integration tests
 - [ ] 02-02-PLAN.md — Benchmark runner engine (Scenario interface, Runner, Results, HdrHistogram)
 - [ ] 02-03-PLAN.md — Five benchmark scenarios (append, window, list, coldstart, concurrent)
-- [ ] 02-04-PLAN.md — CLI entry point wiring flags, testcontainer, and runner
+- [x] 02-04-PLAN.md — CLI entry point wiring flags, testcontainer, and runner
 
 ### Phase 3: DynamoDB + Turso Adapters
 **Goal**: All five scenarios run against DynamoDB and Turso, completing the three-way comparison with a correctly designed DynamoDB schema
