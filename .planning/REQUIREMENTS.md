@@ -36,12 +36,12 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 ### Output & Reporting
 
-- [ ] **OUT-01**: Per-backend per-scenario results table (human-readable)
-- [ ] **OUT-02**: JSON output mode (`--output json`) for machine-readable results
-- [ ] **OUT-03**: Run metadata in output: timestamps, Git SHA, Go version, backend configs
-- [ ] **OUT-04**: Cost projection model: DynamoDB RCU/WCU at projected scale, RDS instance cost, Turso pricing
-- [ ] **OUT-05**: Operational complexity scorecard: SDK ergonomics, connection management, error handling, schema migration, local dev story
-- [ ] **OUT-06**: Written comparison report with final recommendation
+- [x] **OUT-01**: Per-backend per-scenario results table (human-readable)
+- [x] **OUT-02**: JSON output mode (`--output json`) for machine-readable results
+- [x] **OUT-03**: Run metadata in output: timestamps, Git SHA, Go version, backend configs
+- [x] **OUT-04**: Cost projection model: DynamoDB RCU/WCU at projected scale, RDS instance cost, Turso pricing
+- [x] **OUT-05**: Operational complexity scorecard: SDK ergonomics, connection management, error handling, schema migration, local dev story
+- [x] **OUT-06**: Written comparison report with final recommendation
 
 ### CLI
 
@@ -98,12 +98,12 @@ Deferred to future work if POC validates the approach.
 | METR-02 | Phase 2 | Pending |
 | METR-03 | Phase 2 | Complete |
 | METR-04 | Phase 2 | Complete |
-| OUT-01 | Phase 4 | Pending |
-| OUT-02 | Phase 4 | Pending |
-| OUT-03 | Phase 4 | Pending |
-| OUT-04 | Phase 4 | Pending |
-| OUT-05 | Phase 4 | Pending |
-| OUT-06 | Phase 4 | Pending |
+| OUT-01 | Phase 4 | Complete |
+| OUT-02 | Phase 4 | Complete |
+| OUT-03 | Phase 4 | Complete |
+| OUT-04 | Phase 4 | Complete |
+| OUT-05 | Phase 4 | Complete |
+| OUT-06 | Phase 4 | Complete |
 | CLI-01 | Phase 2 | Complete |
 | CLI-02 | Phase 2 | Complete |
 | CLI-03 | Phase 2 | Complete |
