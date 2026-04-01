@@ -76,7 +76,10 @@ Plans:
   3. Cost projection output shows DynamoDB RCU/WCU costs, RDS instance cost, and Turso pricing at a configurable projected scale
   4. Operational complexity scorecard covers SDK ergonomics, connection management, error handling, schema migration, and local dev story for each backend
   5. Written recommendation document exists with neutral framing and explicit architectural explanation for Turso latency results
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 04-01-PLAN.md — Report package: cost model, scorecard, metadata, JSON envelope, tables, Markdown generator
+- [ ] 04-02-PLAN.md — CLI wiring: new flags, result accumulation, report output dispatch
 
 ## Progress
 
@@ -88,4 +91,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation | 3/3 | Complete   | 2026-03-31 |
 | 2. Runner + Postgres Baseline | 4/4 | Complete   | 2026-04-01 |
 | 3. DynamoDB + Turso Adapters | 3/3 | Complete   | 2026-04-01 |
-| 4. Cost Model + Report | 0/? | Not started | - |
+| 4. Cost Model + Report | 0/2 | Not started | - |
