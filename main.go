@@ -10,6 +10,7 @@ import (
 	"github.com/anti-duhring/agent-db/internal/benchmark"
 	"github.com/anti-duhring/agent-db/internal/benchmark/scenarios"
 	"github.com/anti-duhring/agent-db/internal/generator"
+	"github.com/anti-duhring/agent-db/internal/report"
 	dynamodbrepo "github.com/anti-duhring/agent-db/internal/repository/dynamodb"
 	"github.com/anti-duhring/agent-db/internal/repository/postgres"
 	tursorepo "github.com/anti-duhring/agent-db/internal/repository/turso"
@@ -28,7 +29,23 @@ func main() {
 	conc := flag.Int("concurrency", 10, "goroutine count for concurrent scenario")
 	seed := flag.Int64("seed", 42, "RNG seed for deterministic data")
 	dryRun := flag.Bool("dry-run", false, "verify connectivity without running benchmarks")
+	output := flag.String("output", "table", "output format (table, json)")
+	reportPath := flag.String("report", "", "path to write Markdown report (e.g., REPORT.md)")
+	scaleUsers := flag.Int("scale-users", 100, "projected user count for cost model")
+	scaleConvos := flag.Int("scale-convos", 50, "projected conversations per user for cost model")
+	scaleMsgs := flag.Int("scale-msgs-per-day", 200, "projected messages per day per conversation for cost model")
+	rdsInstanceType := flag.String("rds-instance-type", "db.t4g.micro", "RDS instance type for cost model (db.t4g.micro or db.t4g.small)")
+	dynamoDBMode := flag.String("dynamodb-mode", "on-demand", "DynamoDB pricing mode for cost model (on-demand)")
 	flag.Parse()
+
+	// Validate --output flag.
+	if *output != "table" && *output != "json" {
+		fmt.Fprintf(os.Stderr, "unknown output format: %s (valid: table, json)\n", *output)
+		os.Exit(1)
+	}
+
+	// Suppress unused variable warning for dynamoDBMode (currently only one valid value).
+	_ = dynamoDBMode
 
 	// Validate profile flag.
 	var prof generator.Profile
@@ -99,33 +116,104 @@ func main() {
 
 	ctx := context.Background()
 
+	// Accumulate results from all backend runs before generating any output.
+	var allResults []report.BackendResults
+
 	for _, b := range selectedBackends {
 		switch b {
 		case "postgres":
 			if *dryRun {
 				runPostgresDryRun(ctx)
 			} else {
-				runPostgres(ctx, prof, buildScenarios(), *iters, *warmup, *conc, *seed)
+				meta, results, err := runPostgres(ctx, prof, buildScenarios(), *iters, *warmup, *conc, *seed)
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "postgres benchmark failed: %v\n", err)
+					os.Exit(1)
+				}
+				if results != nil {
+					allResults = append(allResults, report.BackendResults{Meta: meta, Results: results})
+				}
 			}
 		case "dynamodb":
 			if *dryRun {
 				runDynamoDBDryRun(ctx)
 			} else {
-				runDynamoDB(ctx, prof, buildScenarios(), *iters, *warmup, *conc, *seed)
+				meta, results, err := runDynamoDB(ctx, prof, buildScenarios(), *iters, *warmup, *conc, *seed)
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "dynamodb benchmark failed: %v\n", err)
+					os.Exit(1)
+				}
+				if results != nil {
+					allResults = append(allResults, report.BackendResults{Meta: meta, Results: results})
+				}
 			}
 		case "turso":
 			if *dryRun {
 				runTursoDryRun(ctx, isAll)
 			} else {
-				runTurso(ctx, prof, buildScenarios(), *iters, *warmup, *conc, *seed, isAll)
+				meta, results, err := runTurso(ctx, prof, buildScenarios(), *iters, *warmup, *conc, *seed, isAll)
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "turso benchmark failed: %v\n", err)
+					os.Exit(1)
+				}
+				if results != nil {
+					allResults = append(allResults, report.BackendResults{Meta: meta, Results: results})
+				}
 			}
 		}
+	}
+
+	// Skip report generation for dry-run or when no results were collected.
+	if *dryRun || len(allResults) == 0 {
+		return
+	}
+
+	// Build cost config with flag overrides.
+	costCfg := report.DefaultCostConfig()
+	costCfg.RDSInstanceType = *rdsInstanceType
+	if *rdsInstanceType == "db.t4g.small" {
+		costCfg.RDSInstanceHourly = 0.068
+	}
+	// dynamoDBMode is currently only "on-demand" so defaults are fine.
+
+	scaleCfg := report.ScaleConfig{
+		Users:         *scaleUsers,
+		ConvosPerUser: *scaleConvos,
+		MsgsPerDay:    *scaleMsgs,
+	}
+
+	projections := report.ComputeProjections(scaleCfg, costCfg)
+	runMeta := report.CollectMetadata(*seed, *profile, *iters)
+
+	if *output == "json" {
+		// Per D-13: JSON to stdout, suppress human-readable tables.
+		if err := report.PrintJSON(os.Stdout, allResults, runMeta, projections); err != nil {
+			fmt.Fprintf(os.Stderr, "failed to write JSON output: %v\n", err)
+			os.Exit(1)
+		}
+	} else {
+		// Human-readable: print per-backend latency tables, then cost and scorecard.
+		for _, br := range allResults {
+			benchmark.PrintResults(br.Meta, *profile, *iters, *seed, br.Results)
+		}
+		report.PrintCostTable(os.Stdout, projections, scaleCfg)
+		report.PrintScorecardTable(os.Stdout)
+	}
+
+	// Per D-08: --report writes Markdown file (orthogonal to --output).
+	if *reportPath != "" {
+		md := report.GenerateMarkdown(allResults, projections, scaleCfg, runMeta)
+		if err := report.WriteReport(*reportPath, md); err != nil {
+			fmt.Fprintf(os.Stderr, "failed to write report: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Fprintf(os.Stderr, "Report written to %s\n", *reportPath)
 	}
 }
 
 // runPostgres starts a Postgres testcontainer, creates the repository, runs all scenarios,
-// and prints results with BackendMeta.
-func runPostgres(ctx context.Context, prof generator.Profile, selectedScenarios []benchmark.Scenario, iters, warmup, conc int, seed int64) {
+// and returns results with BackendMeta for accumulation.
+func runPostgres(ctx context.Context, prof generator.Profile, selectedScenarios []benchmark.Scenario, iters, warmup, conc int, seed int64) (benchmark.BackendMeta, []benchmark.ScenarioResult, error) {
 	fmt.Println("Starting Postgres container...")
 	ctr, err := tcpostgres.Run(ctx,
 		"postgres:16-alpine",
@@ -135,21 +223,18 @@ func runPostgres(ctx context.Context, prof generator.Profile, selectedScenarios 
 		tcpostgres.BasicWaitStrategies(),
 	)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to start postgres container: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("failed to start postgres container: %w", err)
 	}
 	defer testcontainers.TerminateContainer(ctr)
 
 	connStr, err := ctr.ConnectionString(ctx, "sslmode=disable")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to get postgres connection string: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("failed to get postgres connection string: %w", err)
 	}
 
 	repo, err := postgres.New(ctx, connStr)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to create postgres repository: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("failed to create postgres repository: %w", err)
 	}
 	defer repo.Close()
 
@@ -165,15 +250,14 @@ func runPostgres(ctx context.Context, prof generator.Profile, selectedScenarios 
 	runner := benchmark.NewRunner(repo, selectedScenarios, config)
 	results, err := runner.Run(ctx)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "postgres benchmark failed: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("postgres benchmark failed: %w", err)
 	}
 
 	meta := benchmark.BackendMeta{
 		Name:      "postgres",
 		Transport: "pgx/v5 (local container)",
 	}
-	benchmark.PrintResults(meta, prof.Name, iters, seed, results)
+	return meta, results, nil
 }
 
 // runPostgresDryRun verifies Postgres connectivity and schema without running benchmarks.
@@ -227,32 +311,28 @@ func runPostgresDryRun(ctx context.Context) {
 }
 
 // runDynamoDB starts a LocalStack container, creates the DynamoDB repository, runs all scenarios,
-// and prints results with BackendMeta.
-func runDynamoDB(ctx context.Context, prof generator.Profile, selectedScenarios []benchmark.Scenario, iters, warmup, conc int, seed int64) {
+// and returns results with BackendMeta for accumulation.
+func runDynamoDB(ctx context.Context, prof generator.Profile, selectedScenarios []benchmark.Scenario, iters, warmup, conc int, seed int64) (benchmark.BackendMeta, []benchmark.ScenarioResult, error) {
 	fmt.Println("Starting LocalStack container for DynamoDB...")
 	lsCtr, err := localstack.Run(ctx, "localstack/localstack:3.8")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to start LocalStack container: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("failed to start LocalStack container: %w", err)
 	}
 	defer testcontainers.TerminateContainer(lsCtr)
 
 	host, err := lsCtr.Host(ctx)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to get LocalStack host: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("failed to get LocalStack host: %w", err)
 	}
 	port, err := lsCtr.MappedPort(ctx, "4566/tcp")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to get LocalStack port: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("failed to get LocalStack port: %w", err)
 	}
 	endpoint := fmt.Sprintf("http://%s:%s", host, port.Port())
 
 	repo, err := dynamodbrepo.New(ctx, endpoint)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to create DynamoDB repository: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("failed to create DynamoDB repository: %w", err)
 	}
 	defer repo.Close()
 
@@ -268,15 +348,14 @@ func runDynamoDB(ctx context.Context, prof generator.Profile, selectedScenarios 
 	runner := benchmark.NewRunner(repo, selectedScenarios, config)
 	results, err := runner.Run(ctx)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "dynamodb benchmark failed: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("dynamodb benchmark failed: %w", err)
 	}
 
 	meta := benchmark.BackendMeta{
 		Name:      "dynamodb",
 		Transport: "aws-sdk-go-v2 (LocalStack)",
 	}
-	benchmark.PrintResults(meta, prof.Name, iters, seed, results)
+	return meta, results, nil
 }
 
 // runDynamoDBDryRun verifies DynamoDB (LocalStack) connectivity without running benchmarks.
@@ -330,16 +409,16 @@ func runDynamoDBDryRun(ctx context.Context) {
 }
 
 // runTurso connects to Turso Cloud, creates the repository, runs all scenarios,
-// and prints results with BackendMeta. If isAll is true and env vars are missing,
-// a warning is printed and execution skips (per D-14).
-func runTurso(ctx context.Context, prof generator.Profile, selectedScenarios []benchmark.Scenario, iters, warmup, conc int, seed int64, isAll bool) {
+// and returns results with BackendMeta for accumulation. If isAll is true and env vars
+// are missing, a warning is printed and nil results are returned (per D-14).
+func runTurso(ctx context.Context, prof generator.Profile, selectedScenarios []benchmark.Scenario, iters, warmup, conc int, seed int64, isAll bool) (benchmark.BackendMeta, []benchmark.ScenarioResult, error) {
 	url := os.Getenv("TURSO_URL")
 	authToken := os.Getenv("TURSO_AUTH_TOKEN")
 
 	if url == "" || authToken == "" {
 		if isAll {
 			fmt.Println("Skipping turso: TURSO_URL and TURSO_AUTH_TOKEN not set")
-			return
+			return benchmark.BackendMeta{}, nil, nil
 		}
 		fmt.Fprintln(os.Stderr, "error: TURSO_URL and TURSO_AUTH_TOKEN must be set for --backend turso")
 		os.Exit(1)
@@ -348,8 +427,7 @@ func runTurso(ctx context.Context, prof generator.Profile, selectedScenarios []b
 	fmt.Println("Connecting to Turso Cloud...")
 	repo, err := tursorepo.New(ctx, url, authToken)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to create Turso repository: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("failed to create Turso repository: %w", err)
 	}
 	defer repo.Close()
 
@@ -365,8 +443,7 @@ func runTurso(ctx context.Context, prof generator.Profile, selectedScenarios []b
 	runner := benchmark.NewRunner(repo, selectedScenarios, config)
 	results, err := runner.Run(ctx)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "turso benchmark failed: %v\n", err)
-		os.Exit(1)
+		return benchmark.BackendMeta{}, nil, fmt.Errorf("turso benchmark failed: %w", err)
 	}
 
 	meta := benchmark.BackendMeta{
@@ -374,7 +451,7 @@ func runTurso(ctx context.Context, prof generator.Profile, selectedScenarios []b
 		Transport: "libsql:// (remote, internet)",
 		Note:      "Latency includes internet round-trip to Turso Cloud",
 	}
-	benchmark.PrintResults(meta, prof.Name, iters, seed, results)
+	return meta, results, nil
 }
 
 // runTursoDryRun verifies Turso connectivity without running benchmarks.
