@@ -16,6 +16,13 @@ type ScenarioResult struct {
 	TotalCount   int64 // number of measured iterations
 }
 
+// BackendMeta carries per-backend metadata displayed in the results header (per D-15, D-16).
+type BackendMeta struct {
+	Name      string // e.g., "postgres", "dynamodb", "turso"
+	Transport string // e.g., "pgx/v5 (local container)", "aws-sdk-go-v2 (LocalStack)", "libsql:// (remote, internet)"
+	Note      string // optional, e.g., "Latency includes internet round-trip to Turso Cloud"
+}
+
 // formatLatency converts a microsecond latency value to a human-readable string.
 // Values under 1ms are displayed as microseconds; values >= 1ms as milliseconds.
 func formatLatency(microseconds int64) string {
@@ -26,9 +33,13 @@ func formatLatency(microseconds int64) string {
 }
 
 // PrintResults prints a formatted results table to stdout showing p50/p95/p99
-// latency for each scenario.
-func PrintResults(backend string, profile string, iterations int, seed int64, results []ScenarioResult) {
-	fmt.Printf("\nBackend: %s | Profile: %s | Iterations: %d | Seed: %d\n", backend, profile, iterations, seed)
+// latency for each scenario. BackendMeta provides the transport and note lines.
+func PrintResults(meta BackendMeta, profile string, iterations int, seed int64, results []ScenarioResult) {
+	fmt.Printf("\nBackend: %s | Transport: %s | Profile: %s | Iterations: %d | Seed: %d\n",
+		meta.Name, meta.Transport, profile, iterations, seed)
+	if meta.Note != "" {
+		fmt.Printf("Note: %s\n", meta.Note)
+	}
 	fmt.Println()
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 3, ' ', tabwriter.AlignRight)
