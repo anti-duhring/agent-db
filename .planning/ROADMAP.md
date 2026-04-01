@@ -62,8 +62,8 @@ Plans:
   4. DynamoDB adapter uses ConsistentRead=true for all read scenarios and completes a warmup pass before timing begins
 **Plans**: 3 plans
 Plans:
-- [ ] 03-01-PLAN.md — DynamoDB ChatRepository adapter with single-table design and LocalStack integration tests
-- [ ] 03-02-PLAN.md — Turso ChatRepository adapter with libsql driver and env-var-gated integration tests
+- [x] 03-01-PLAN.md — DynamoDB ChatRepository adapter with single-table design and LocalStack integration tests
+- [x] 03-02-PLAN.md — Turso ChatRepository adapter with libsql driver and env-var-gated integration tests
 - [ ] 03-03-PLAN.md — CLI multi-backend wiring with BackendMeta output and side-by-side results
 
 ### Phase 4: Cost Model + Report
@@ -87,5 +87,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete   | 2026-03-31 |
 | 2. Runner + Postgres Baseline | 4/4 | Complete   | 2026-04-01 |
-| 3. DynamoDB + Turso Adapters | 0/3 | In progress | - |
+| 3. DynamoDB + Turso Adapters | 2/3 | In Progress|  |
 | 4. Cost Model + Report | 0/? | Not started | - |

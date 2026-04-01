@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 context gathered
-last_updated: "2026-04-01T00:24:34.050Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-04-01T01:09:39.064Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 10
+  completed_plans: 9
   percent: 0
 ---
 
@@ -21,12 +21,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Produce data-backed evidence for choosing the right storage engine for user-scoped LLM chat conversations
-**Current focus:** Phase 02 — runner-postgres-baseline
+**Current focus:** Phase 03 — dynamodb-turso-adapters
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
+Phase: 03 (dynamodb-turso-adapters) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
 Last activity: 2026-04-01
 
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-runner-postgres-baseline P01 | 4 | 1 tasks | 5 files |
 | Phase 02-runner-postgres-baseline P04 | 4 | 1 tasks | 11 files |
 | Phase 02 P04 | 5 | 2 tasks | 11 files |
+| Phase 03-dynamodb-turso-adapters P01 | 36 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,9 @@ Recent decisions affecting current work:
 - [Phase 02]: WarmupSkipper is an optional interface checked at runtime via type assertion in Runner.Run
 - [Phase 02]: ConcurrentScenario: each Run() call spawns N goroutines; runner histogram records total wall time per N-goroutine batch
 - [Phase 02]: main.go uses stdlib flag package per CLAUDE.md — no cobra
+- [Phase 03-dynamodb-turso-adapters]: LocalStack pinned to 3.8 (not :latest) — 2026.x requires LOCALSTACK_AUTH_TOKEN; 3.8 is last OSS version
+- [Phase 03-dynamodb-turso-adapters]: AppendMessage uses 4-item TransactWriteItems (message + old listing delete + new listing + meta update) for atomic SK rotation per D-04
+- [Phase 03-dynamodb-turso-adapters]: convMetaRecord stores user_pk and conv_listing_sk fields to avoid GSI; AppendMessage does GetItem + TransactWriteItems
 
 ### Pending Todos
 
@@ -97,6 +101,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T00:24:34.044Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-dynamodb-turso-adapters/03-CONTEXT.md
+Last session: 2026-04-01T01:09:39.061Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: None
