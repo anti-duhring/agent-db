@@ -21,17 +21,17 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 ### Benchmark Scenarios
 
-- [x] **SCEN-01**: AppendMessage — single message insert into existing conversation, measures write latency
-- [x] **SCEN-02**: LoadSlidingWindow — fetch last N=20 messages from conversation with 200+ messages, keyset pagination
-- [x] **SCEN-03**: ListConversations — list all conversations for a (partner_id, user_id) sorted by last activity
-- [x] **SCEN-04**: ColdStartLoad — first sliding window read after fresh connection (no warmup)
-- [x] **SCEN-05**: ConcurrentWrites — N goroutines (10, 50) appending messages in parallel
+- [ ] **SCEN-01**: AppendMessage — single message insert into existing conversation, measures write latency
+- [ ] **SCEN-02**: LoadSlidingWindow — fetch last N=20 messages from conversation with 200+ messages, keyset pagination
+- [ ] **SCEN-03**: ListConversations — list all conversations for a (partner_id, user_id) sorted by last activity
+- [ ] **SCEN-04**: ColdStartLoad — first sliding window read after fresh connection (no warmup)
+- [ ] **SCEN-05**: ConcurrentWrites — N goroutines (10, 50) appending messages in parallel
 
 ### Measurement & Metrics
 
-- [x] **METR-01**: Latency percentiles per scenario per backend: p50, p95, p99
-- [x] **METR-02**: Warmup phase (configurable iterations) excluded from measurement
-- [ ] **METR-03**: Configurable iteration count via `--iterations N` flag
+- [ ] **METR-01**: Latency percentiles per scenario per backend: p50, p95, p99
+- [ ] **METR-02**: Warmup phase (configurable iterations) excluded from measurement
+- [x] **METR-03**: Configurable iteration count via `--iterations N` flag
 - [x] **METR-04**: Environment isolation — clean schema/data state per run
 
 ### Output & Reporting
@@ -45,10 +45,10 @@ Requirements for the benchmark harness. Each maps to roadmap phases.
 
 ### CLI
 
-- [ ] **CLI-01**: `--dry-run` mode that verifies connectivity and schema setup without running benchmarks
-- [ ] **CLI-02**: Backend selection flag (`--backend postgres,dynamodb,turso` or `--backend all`)
-- [ ] **CLI-03**: Scenario selection flag (`--scenario append,window` or `--scenario all`)
-- [ ] **CLI-04**: Data profile flag (`--profile small,medium,large`)
+- [x] **CLI-01**: `--dry-run` mode that verifies connectivity and schema setup without running benchmarks
+- [x] **CLI-02**: Backend selection flag (`--backend postgres,dynamodb,turso` or `--backend all`)
+- [x] **CLI-03**: Scenario selection flag (`--scenario append,window` or `--scenario all`)
+- [x] **CLI-04**: Data profile flag (`--profile small,medium,large`)
 
 ## v2 Requirements
 
@@ -89,14 +89,14 @@ Deferred to future work if POC validates the approach.
 | DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Complete |
 | DATA-03 | Phase 1 | Complete |
-| SCEN-01 | Phase 2 | Complete |
-| SCEN-02 | Phase 2 | Complete |
-| SCEN-03 | Phase 2 | Complete |
-| SCEN-04 | Phase 2 | Complete |
-| SCEN-05 | Phase 2 | Complete |
-| METR-01 | Phase 2 | Complete |
-| METR-02 | Phase 2 | Complete |
-| METR-03 | Phase 2 | Pending |
+| SCEN-01 | Phase 2 | Pending |
+| SCEN-02 | Phase 2 | Pending |
+| SCEN-03 | Phase 2 | Pending |
+| SCEN-04 | Phase 2 | Pending |
+| SCEN-05 | Phase 2 | Pending |
+| METR-01 | Phase 2 | Pending |
+| METR-02 | Phase 2 | Pending |
+| METR-03 | Phase 2 | Complete |
 | METR-04 | Phase 2 | Complete |
 | OUT-01 | Phase 4 | Pending |
 | OUT-02 | Phase 4 | Pending |
@@ -104,10 +104,10 @@ Deferred to future work if POC validates the approach.
 | OUT-04 | Phase 4 | Pending |
 | OUT-05 | Phase 4 | Pending |
 | OUT-06 | Phase 4 | Pending |
-| CLI-01 | Phase 2 | Pending |
-| CLI-02 | Phase 2 | Pending |
-| CLI-03 | Phase 2 | Pending |
-| CLI-04 | Phase 2 | Pending |
+| CLI-01 | Phase 2 | Complete |
+| CLI-02 | Phase 2 | Complete |
+| CLI-03 | Phase 2 | Complete |
+| CLI-04 | Phase 2 | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total

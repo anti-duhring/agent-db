@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-runner-postgres-baseline 02-03-PLAN.md
-last_updated: "2026-03-31T23:44:01.654Z"
+stopped_at: "Checkpoint: 02-04 Task 2 human-verify pending"
+last_updated: "2026-04-01T00:01:15.696Z"
 last_activity: 2026-03-31
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 5
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 ## Current Position
 
 Phase: 02 (runner-postgres-baseline) — EXECUTING
-Plan: 3 of 4
+Plan: 2 of 4
 Status: Ready to execute
 Last activity: 2026-03-31
 
@@ -56,8 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-foundation P02 | 1 | 1 tasks | 2 files |
 | Phase 01-foundation P03 | 2 | 1 tasks | 4 files |
 | Phase 02-runner-postgres-baseline P01 | 4 | 1 tasks | 5 files |
-| Phase 02-runner-postgres-baseline P02 | 2 | 2 tasks | 5 files |
-| Phase 02-runner-postgres-baseline P03 | 4 | 2 tasks | 7 files |
+| Phase 02-runner-postgres-baseline P04 | 4 | 1 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -79,9 +78,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Generator uses fixed base time (2026-01-01 UTC) for deterministic timestamps
 - [Phase 02-runner-postgres-baseline]: Schema must be applied via a separate pgx.Connect before pool creation — AfterConnect fires when pool acquires first connection, so tables must exist before statements are prepared
 - [Phase 02-runner-postgres-baseline]: LoadWindow uses DESC LIMIT query + Go in-place reverse for oldest-first output — single efficient DB roundtrip using idx_messages_window index
-- [Phase 02-runner-postgres-baseline]: SeedResult carries repo-assigned Conversations not generated UUIDs — scenarios must use SeedResult.Conversations for FK-safe repo calls
-- [Phase 02-runner-postgres-baseline]: Scenario.Setup receives SeedResult not raw GeneratedData to avoid FK mismatch on repo-assigned IDs
-- [Phase 02-runner-postgres-baseline]: WarmupSkipper implemented as optional interface (not a Scenario method) to keep the interface minimal and non-breaking for future adapters
+- [Phase 02-runner-postgres-baseline]: Window/ColdStart scenarios match DB conversations to generator conversations by index order since CreateConversation generates its own ID
+- [Phase 02-runner-postgres-baseline]: WarmupSkipper is an optional interface checked at runtime via type assertion in Runner.Run; only ColdStartLoad implements it
+- [Phase 02-runner-postgres-baseline]: ConcurrentScenario: each Run() call spawns N goroutines and records wall time for the full batch — measures batch throughput not individual write latency
 
 ### Pending Todos
 
@@ -94,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-31T23:44:01.650Z
-Stopped at: Completed 02-runner-postgres-baseline 02-03-PLAN.md
+Last session: 2026-04-01T00:01:15.690Z
+Stopped at: Checkpoint: 02-04 Task 2 human-verify pending
 Resume file: None

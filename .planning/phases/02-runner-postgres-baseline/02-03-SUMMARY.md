@@ -78,7 +78,7 @@ Each task was committed atomically:
 1. **Task 1: AppendMessage, LoadSlidingWindow, ListConversations** - `da795b6` (feat)
 2. **Task 2: ColdStartLoad, ConcurrentWrites + WarmupSkipper** - `21128c1` (feat)
 
-**Plan metadata:** (docs commit — added after summary)
+**Plan metadata:** `4fec1f8` (docs: complete benchmark scenarios plan)
 
 ## Files Created/Modified
 - `internal/benchmark/scenarios/append.go` - AppendScenario (SCEN-01): single-message write latency

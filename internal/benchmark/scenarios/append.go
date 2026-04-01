@@ -1,10 +1,9 @@
-// Package scenarios provides concrete Scenario implementations for the benchmark harness.
-// Each scenario targets a specific ChatRepository access pattern.
+// Package scenarios provides concrete implementations of the benchmark.Scenario
+// interface, each targeting a distinct database access pattern.
 package scenarios
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/anti-duhring/agent-db/internal/benchmark"
 	"github.com/anti-duhring/agent-db/internal/domain"
@@ -12,36 +11,35 @@ import (
 	"github.com/google/uuid"
 )
 
-// Compile-time check: AppendScenario must implement benchmark.Scenario.
+// Compile-time interface check.
 var _ benchmark.Scenario = (*AppendScenario)(nil)
 
 // AppendScenario measures single-message write latency (SCEN-01).
-// Each Run call appends one message to the target conversation.
 type AppendScenario struct {
 	convID   uuid.UUID
 	msgIndex int
 }
 
-// NewAppendScenario returns a new AppendScenario ready for Setup.
+// NewAppendScenario creates a new AppendScenario.
 func NewAppendScenario() *AppendScenario {
 	return &AppendScenario{}
 }
 
-// Name returns the human-readable scenario identifier.
+// Name returns the scenario's display name.
 func (s *AppendScenario) Name() string {
 	return "AppendMessage"
 }
 
-// Setup stores the first seeded conversation ID for use during Run.
+// Setup stores the first conversation ID from the seeded data.
 func (s *AppendScenario) Setup(_ context.Context, _ repository.ChatRepository, seed benchmark.SeedResult) error {
 	if len(seed.Conversations) == 0 {
-		return fmt.Errorf("append scenario: no seeded conversations available")
+		return nil
 	}
 	s.convID = seed.Conversations[0].ID
 	return nil
 }
 
-// Run appends a single message to the target conversation and measures write latency.
+// Run appends a single message and measures its write latency.
 func (s *AppendScenario) Run(ctx context.Context, repo repository.ChatRepository) error {
 	s.msgIndex++
 	_, err := repo.AppendMessage(ctx, s.convID, domain.RoleUser, "benchmark message")

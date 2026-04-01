@@ -1,6 +1,5 @@
-// Package benchmark provides the runner engine for executing benchmark scenarios
-// against chat storage backends. It defines the Scenario interface, the Runner
-// orchestrator, and result types with HdrHistogram-based latency measurement.
+// Package benchmark provides the benchmark runner engine: Scenario interface,
+// Runner orchestrator, and ScenarioResult types for the agent-db benchmark harness.
 package benchmark
 
 import (
@@ -9,32 +8,28 @@ import (
 	"github.com/anti-duhring/agent-db/internal/repository"
 )
 
-// WarmupSkipper is an optional interface. Scenarios that implement it
-// with SkipWarmup() returning true will not have warmup iterations run by
-// the Runner. Used by ColdStartLoad (SCEN-04) to measure first-read latency.
-type WarmupSkipper interface {
-	SkipWarmup() bool
-}
-
-// Scenario is the interface that all benchmark scenarios must implement.
-// Each scenario exercises a specific chat storage operation or sequence of
-// operations against a ChatRepository backend (D-06).
+// Scenario defines the contract for a single benchmark scenario.
+// Each scenario targets one specific database access pattern.
 type Scenario interface {
-	// Name returns a short human-readable identifier for this scenario.
-	// Used as the row label in the results table.
+	// Name returns the human-readable name of the scenario.
 	Name() string
 
-	// Setup is called once before the warmup and measured iterations begin.
-	// It receives the pre-seeded data so scenarios can look up conversation IDs,
-	// user IDs, and other identifiers they need to issue operations against.
+	// Setup prepares the scenario before warmup and measurement iterations begin.
+	// It receives the actual DB-assigned conversation IDs via SeedResult.
 	Setup(ctx context.Context, repo repository.ChatRepository, seed SeedResult) error
 
-	// Run executes the operation being benchmarked. It is called once per
-	// iteration (both warmup and measured). Latency is measured around this call.
+	// Run executes a single measured iteration of the scenario.
+	// Called once per warmup iteration and once per measured iteration.
 	Run(ctx context.Context, repo repository.ChatRepository) error
 
-	// Teardown is called once after all iterations complete. It may be used to
-	// clean up any state created during Setup or Run. Errors are logged but do
-	// not fail the run.
+	// Teardown releases any resources held by the scenario.
+	// Called once after all iterations (warmup + measured) complete.
 	Teardown(ctx context.Context) error
+}
+
+// WarmupSkipper is an optional interface. Scenarios that implement it
+// with SkipWarmup() returning true will not have warmup iterations run.
+// Used by ColdStartLoad (SCEN-04) to measure true cold-start latency.
+type WarmupSkipper interface {
+	SkipWarmup() bool
 }

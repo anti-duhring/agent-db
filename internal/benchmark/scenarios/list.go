@@ -8,27 +8,26 @@ import (
 	"github.com/google/uuid"
 )
 
-// Compile-time check: ListScenario must implement benchmark.Scenario.
+// Compile-time interface check.
 var _ benchmark.Scenario = (*ListScenario)(nil)
 
-// ListScenario measures conversation-list latency (SCEN-03).
-// Each Run call fetches all conversations for the seeded (partner_id, user_id) pair.
+// ListScenario measures list-all-conversations latency for a (partnerID, userID) pair (SCEN-03).
 type ListScenario struct {
 	partnerID uuid.UUID
 	userID    uuid.UUID
 }
 
-// NewListScenario returns a new ListScenario ready for Setup.
+// NewListScenario creates a new ListScenario.
 func NewListScenario() *ListScenario {
 	return &ListScenario{}
 }
 
-// Name returns the human-readable scenario identifier.
+// Name returns the scenario's display name.
 func (s *ListScenario) Name() string {
 	return "ListConversations"
 }
 
-// Setup stores the partner and user IDs from the seed for use during Run.
+// Setup stores the partner and user IDs from the seed data.
 func (s *ListScenario) Setup(_ context.Context, _ repository.ChatRepository, seed benchmark.SeedResult) error {
 	s.partnerID = seed.PartnerID
 	s.userID = seed.UserID

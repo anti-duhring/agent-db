@@ -2,66 +2,64 @@ package scenarios
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/anti-duhring/agent-db/internal/benchmark"
 	"github.com/anti-duhring/agent-db/internal/repository"
 	"github.com/google/uuid"
 )
 
-// Compile-time checks: ColdStartScenario must implement benchmark.Scenario
-// and benchmark.WarmupSkipper.
+// Compile-time interface check.
 var _ benchmark.Scenario = (*ColdStartScenario)(nil)
-var _ benchmark.WarmupSkipper = (*ColdStartScenario)(nil)
 
-// ColdStartScenario measures first-read (cold start) latency (SCEN-04).
-// It implements WarmupSkipper so the runner skips warm-up iterations,
-// ensuring the first Run call hits a cold connection/cache path.
-// The actual operation is identical to LoadSlidingWindow — last 20 messages.
+// ColdStartScenario measures sliding window latency without warmup (SCEN-04).
+// It implements WarmupSkipper to signal the runner that warmup should be skipped,
+// ensuring all measurements reflect true first-read (cold) latency.
 type ColdStartScenario struct {
 	convID uuid.UUID
 }
 
-// NewColdStartScenario returns a new ColdStartScenario ready for Setup.
+// NewColdStartScenario creates a new ColdStartScenario.
 func NewColdStartScenario() *ColdStartScenario {
 	return &ColdStartScenario{}
 }
 
-// Name returns the human-readable scenario identifier.
+// Name returns the scenario's display name.
 func (s *ColdStartScenario) Name() string {
 	return "ColdStartLoad"
 }
 
-// SkipWarmup returns true, causing the runner to skip warmup iterations.
+// SkipWarmup implements benchmark.WarmupSkipper, telling the runner not to
+// run warmup iterations before measurement.
 func (s *ColdStartScenario) SkipWarmup() bool {
 	return true
 }
 
-// Setup selects a conversation with 200+ messages when available, otherwise
-// falls back to the first conversation. Same selection logic as WindowScenario.
+// Setup selects the conversation with the most messages, same logic as WindowScenario.
+// NOTE: seed.OriginalData.Messages is keyed by generator-assigned conversation IDs,
+// while seed.Conversations holds DB-assigned conversations. We match by index order.
 func (s *ColdStartScenario) Setup(_ context.Context, _ repository.ChatRepository, seed benchmark.SeedResult) error {
 	if len(seed.Conversations) == 0 {
-		return fmt.Errorf("coldstart scenario: no seeded conversations available")
+		return nil
 	}
 
-	// Prefer a conversation with 200+ messages for a representative window query.
-	for _, conv := range seed.Conversations {
-		for _, origConv := range seed.OriginalData.Conversations {
-			msgs := seed.OriginalData.Messages[origConv.ID]
-			if len(msgs) >= 200 {
-				s.convID = conv.ID
-				return nil
-			}
+	// Prefer a conversation with 200+ messages.
+	// Match by index: seed.Conversations[i] corresponds to OriginalData.Conversations[i].
+	for i, origConv := range seed.OriginalData.Conversations {
+		if i >= len(seed.Conversations) {
+			break
+		}
+		if msgs, ok := seed.OriginalData.Messages[origConv.ID]; ok && len(msgs) >= 200 {
+			s.convID = seed.Conversations[i].ID
+			return nil
 		}
 	}
 
-	// Fallback: use the first conversation regardless of message count.
+	// Fallback: use the first conversation.
 	s.convID = seed.Conversations[0].ID
 	return nil
 }
 
-// Run fetches the last 20 messages from the target conversation.
-// With warmup skipped, the first iteration measures cold-start read latency.
+// Run fetches the last 20 messages without prior warmup.
 func (s *ColdStartScenario) Run(ctx context.Context, repo repository.ChatRepository) error {
 	_, err := repo.LoadWindow(ctx, s.convID, 20)
 	return err

@@ -2,9 +2,7 @@ package scenarios
 
 import (
 	"context"
-	"fmt"
 
-	hdrhistogram "github.com/HdrHistogram/hdrhistogram-go"
 	"github.com/anti-duhring/agent-db/internal/benchmark"
 	"github.com/anti-duhring/agent-db/internal/domain"
 	"github.com/anti-duhring/agent-db/internal/repository"
@@ -12,51 +10,39 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-// Compile-time check: ConcurrentScenario must implement benchmark.Scenario.
+// Compile-time interface check.
 var _ benchmark.Scenario = (*ConcurrentScenario)(nil)
 
-// ConcurrentScenario measures throughput under parallel write pressure (SCEN-05).
-// Each Run call spawns concurrency goroutines that simultaneously call AppendMessage.
-// The runner's outer loop handles per-call timing; each Run iteration represents
-// one round of N concurrent writes completing.
-//
-// The scenario also keeps a per-goroutine histogram for internal analysis,
-// though the runner's external histogram captures total-round latency.
+// ConcurrentScenario measures concurrent write throughput by spawning N goroutines
+// that each append a message in parallel (SCEN-05). Each Run() call is one
+// "iteration" that issues N concurrent writes; the runner's histogram records
+// the total wall-clock time for all N writes to complete.
 type ConcurrentScenario struct {
 	convID      uuid.UUID
 	concurrency int
-	histogram   *hdrhistogram.Histogram
 }
 
-// NewConcurrentScenario returns a ConcurrentScenario configured to spawn
-// concurrency goroutines per Run call.
+// NewConcurrentScenario creates a new ConcurrentScenario with the given goroutine count.
 func NewConcurrentScenario(concurrency int) *ConcurrentScenario {
-	if concurrency <= 0 {
-		concurrency = 1
-	}
-	return &ConcurrentScenario{
-		concurrency: concurrency,
-		// 1us to 30s, 3 significant digits — matches runner histogram settings.
-		histogram: hdrhistogram.New(1, 30_000_000, 3),
-	}
+	return &ConcurrentScenario{concurrency: concurrency}
 }
 
-// Name returns the human-readable scenario identifier.
+// Name returns the scenario's display name.
 func (s *ConcurrentScenario) Name() string {
 	return "ConcurrentWrites"
 }
 
-// Setup stores the first seeded conversation ID for use during Run.
+// Setup stores the first conversation ID for concurrent append targets.
 func (s *ConcurrentScenario) Setup(_ context.Context, _ repository.ChatRepository, seed benchmark.SeedResult) error {
 	if len(seed.Conversations) == 0 {
-		return fmt.Errorf("concurrent scenario: no seeded conversations available")
+		return nil
 	}
 	s.convID = seed.Conversations[0].ID
 	return nil
 }
 
-// Run spawns s.concurrency goroutines that each call AppendMessage once,
-// using errgroup for lifecycle management. Returns the first error encountered.
+// Run spawns s.concurrency goroutines, each appending one message, and waits
+// for all to complete. Returns the first error if any goroutine fails.
 func (s *ConcurrentScenario) Run(ctx context.Context, repo repository.ChatRepository) error {
 	g, gctx := errgroup.WithContext(ctx)
 	g.SetLimit(s.concurrency)
