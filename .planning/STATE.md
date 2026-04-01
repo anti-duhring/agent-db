@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-04-01T01:09:39.064Z"
+stopped_at: Completed 03-01 and 03-02 (Wave 1)
+last_updated: "2026-04-01T01:10:00.000Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 4
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 ## Current Position
 
 Phase: 03 (dynamodb-turso-adapters) — EXECUTING
-Plan: 2 of 3
+Plan: 2 of 3 (Wave 1 complete)
 Status: Ready to execute
 Last activity: 2026-04-01
 
@@ -59,6 +59,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-runner-postgres-baseline P04 | 4 | 1 tasks | 11 files |
 | Phase 02 P04 | 5 | 2 tasks | 11 files |
 | Phase 03-dynamodb-turso-adapters P01 | 36 | 2 tasks | 4 files |
+| Phase 03-dynamodb-turso-adapters P02 | 15 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,8 @@ Recent decisions affecting current work:
 - [Phase 03-dynamodb-turso-adapters]: LocalStack pinned to 3.8 (not :latest) — 2026.x requires LOCALSTACK_AUTH_TOKEN; 3.8 is last OSS version
 - [Phase 03-dynamodb-turso-adapters]: AppendMessage uses 4-item TransactWriteItems (message + old listing delete + new listing + meta update) for atomic SK rotation per D-04
 - [Phase 03-dynamodb-turso-adapters]: convMetaRecord stores user_pk and conv_listing_sk fields to avoid GSI; AppendMessage does GetItem + TransactWriteItems
+- [Phase 03-dynamodb-turso-adapters]: Turso uses database/sql with libsql driver (sql.Open("libsql", ...)) per D-07, D-08
+- [Phase 03-dynamodb-turso-adapters]: Turso SQLite schema uses TEXT for UUIDs/timestamps (RFC3339Nano), INTEGER not INT, no TIMESTAMPTZ per D-09
 
 ### Pending Todos
 
@@ -101,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T01:09:39.061Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-04-01T01:10:00.000Z
+Stopped at: Completed 03-01 and 03-02 (Wave 1)
 Resume file: None
