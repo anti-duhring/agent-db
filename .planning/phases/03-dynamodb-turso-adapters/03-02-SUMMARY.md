@@ -123,3 +123,11 @@ Create a Turso dev database: `turso db create agent-db-bench`
 ---
 *Phase: 03-dynamodb-turso-adapters*
 *Completed: 2026-04-01*
+
+## Self-Check: PASSED
+
+- FOUND: internal/repository/turso/turso.go
+- FOUND: internal/repository/turso/turso_test.go
+- FOUND: internal/repository/turso/migrations/001_create_tables.sql
+- FOUND: fc69b67 (feat: Turso adapter)
+- FOUND: 5ac1d5f (test: integration tests)
