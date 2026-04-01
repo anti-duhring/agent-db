@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - ChatRepository interface, domain types, data generator, and in-memory stub (completed 2026-03-31)
 - [x] **Phase 2: Runner + Postgres Baseline** - Benchmark runner, metrics collector, CLI, and first working end-to-end backend (completed 2026-04-01)
 - [x] **Phase 3: DynamoDB + Turso Adapters** - Remaining two adapter implementations completing the three-way comparison (completed 2026-04-01)
-- [ ] **Phase 4: Cost Model + Report** - Post-processing cost projections, operational complexity scorecard, and final written recommendation
+- [x] **Phase 4: Cost Model + Report** - Post-processing cost projections, operational complexity scorecard, and final written recommendation (completed 2026-04-01)
 
 ## Phase Details
 
@@ -79,7 +79,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 04-01-PLAN.md — Report package: cost model, scorecard, metadata, JSON envelope, tables, Markdown generator
-- [ ] 04-02-PLAN.md — CLI wiring: new flags, result accumulation, report output dispatch
+- [x] 04-02-PLAN.md — CLI wiring: new flags, result accumulation, report output dispatch
 
 ## Progress
 
@@ -91,4 +91,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation | 3/3 | Complete   | 2026-03-31 |
 | 2. Runner + Postgres Baseline | 4/4 | Complete   | 2026-04-01 |
 | 3. DynamoDB + Turso Adapters | 3/3 | Complete   | 2026-04-01 |
-| 4. Cost Model + Report | 1/2 | Executing | - |
+| 4. Cost Model + Report | 2/2 | Complete   | 2026-04-01 |
